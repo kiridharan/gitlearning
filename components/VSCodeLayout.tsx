@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import TextScreen from "./TextScreen";
 import Terminal from "./Terminal";
 import TopBar from "./TopBar";
-import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const VSCodeLayout = () => {
   const [sidebarWidth, setSidebarWidth] = useState(250);
