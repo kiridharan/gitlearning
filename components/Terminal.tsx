@@ -18,7 +18,6 @@ const Terminal = () => {
     if (input === "help") {
       setOutput([
         ...output,
-
         "Available commands:",
         "  - help: Show this help message",
         "  - clear: Clear the terminal",
