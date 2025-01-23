@@ -21,7 +21,7 @@ export default function Terminal() {
         const match = step.match(/`([^`]+)`/);
         return match ? match[1] : "";
       })
-      .filter((cmd: any) => cmd);
+      .filter((cmd: string) => cmd);
 
     return requiredCommands.some((cmd: string) => {
       // Handle variable parts in commands

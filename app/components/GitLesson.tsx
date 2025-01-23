@@ -1,13 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { LessonData, Module, Task } from "../types/lessons";
 import { lessonData } from "../context/LessonContext";
 
 export default function GitLesson() {
   const [selectedModule, setSelectedModule] = useState<number>(0);
   const [selectedTask, setSelectedTask] = useState<number>(0);
-
-
 
   const currentModule = lessonData.lessons[selectedModule];
   const currentTask = currentModule?.tasks[selectedTask];
