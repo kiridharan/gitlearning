@@ -1,41 +1,70 @@
+"use client";
+
 import FileExplorer from "./components/FileExplorer";
 import GitVisualization from "./components/GitVisualization";
 import GitLesson from "./components/GitLesson";
 import { LessonProvider } from "./context/LessonContext";
 import Terminal from "./components/Terminal";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
+function ResizeHandle({ className = "" }: { className?: string }) {
+  return (
+    <PanelResizeHandle
+      className={`w-2 hover:bg-blue-600 bg-[#2a2a2a] transition-colors ${className}`}
+    />
+  );
+}
 
 export default function Home() {
   return (
     <LessonProvider>
-      <main className="h-screen flex flex-col">
-        <div className="flex flex-1 overflow-hidden">
-          <div className="w-64 bg-[#1e1e1e] border-r border-[#333333]">
-            <div className="p-2 text-gray-300">
-              <h2 className="font-semibold mb-2">Explorer</h2>
-              <FileExplorer />
-            </div>
-          </div>
+      <main className="h-screen">
+        <PanelGroup direction="vertical">
+          <Panel defaultSize={80} minSize={30}>
+            <PanelGroup direction="horizontal">
+              <Panel defaultSize={20} minSize={15}>
+                <div className="h-full bg-[#1e1e1e] border-r border-[#333333]">
+                  <div className="p-2 text-gray-300">
+                    <h2 className="font-semibold mb-2">Explorer</h2>
+                    <FileExplorer />
+                  </div>
+                </div>
+              </Panel>
 
-          <div className="flex-1 bg-[#1e1e1e] border-r border-[#333333]">
-            <div className="h-full p-4">
-              <GitVisualization />
-            </div>
-          </div>
+              <ResizeHandle />
 
-          <div className="w-80 bg-[#1e1e1e]">
-            <div className="h-full p-4 text-gray-300">
-              <GitLesson />
-            </div>
-          </div>
-        </div>
+              <Panel defaultSize={50} minSize={30}>
+                <div className="h-full bg-[#1e1e1e] border-r border-[#333333]">
+                  <div className="h-full p-4">
+                    <GitVisualization />
+                  </div>
+                </div>
+              </Panel>
 
-        <div className="h-48 bg-[#1e1e1e] border-t border-[#333333]">
-          <div className="p-2 bg-[#252526] text-gray-300">
-            <div className="font-mono">
-              <Terminal />
+              <ResizeHandle />
+
+              <Panel defaultSize={30} minSize={20}>
+                <div className="h-full bg-[#1e1e1e]">
+                  <div className="h-full p-4 text-gray-300">
+                    <GitLesson />
+                  </div>
+                </div>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+
+          <ResizeHandle className="h-2 w-full cursor-row-resize" />
+
+          <Panel defaultSize={20} minSize={10}>
+            <div className="h-full bg-[#1e1e1e] border-t border-[#333333]">
+              <div className="p-2 bg-[#252526] text-gray-300 h-full">
+                <div className="font-mono h-full">
+                  <Terminal />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </Panel>
+        </PanelGroup>
       </main>
     </LessonProvider>
   );

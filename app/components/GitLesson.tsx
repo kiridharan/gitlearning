@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { lessonData } from "../context/LessonContext";
+import { lessonData } from "../lessons/lessons";
 
 export default function GitLesson() {
   const [selectedModule, setSelectedModule] = useState<number>(0);

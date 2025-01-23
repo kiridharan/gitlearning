@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { lessonData, useLessonContext } from "../context/LessonContext";
+import {  useLessonContext } from "../context/LessonContext";
+import { lessonData } from "../lessons/lessons";
 
 interface TerminalCommand {
   command: string;
