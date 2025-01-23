@@ -3,7 +3,6 @@
 import FileExplorer from "./components/FileExplorer";
 import GitVisualization from "./components/GitVisualization";
 import GitLesson from "./components/GitLesson";
-import { LessonProvider } from "./context/LessonContext";
 import Terminal from "./components/Terminal";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
