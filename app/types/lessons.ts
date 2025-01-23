@@ -9,6 +9,7 @@ export interface Task {
   description: string;
   action: string;
   steps: string[];
+  cmd?: string;
 }
 
 export interface Module {

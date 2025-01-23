@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import {  useLessonContext } from "../context/LessonContext";
-import { lessonData } from "../lessons/lessons";
+import { useLessonStore } from "../store/lessonStore";
 
 interface TerminalCommand {
   command: string;
@@ -12,38 +11,13 @@ export default function Terminal() {
   const [commands, setCommands] = useState<TerminalCommand[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const terminalEndRef = useRef<HTMLDivElement>(null);
-  const { currentModule, currentTask, markTaskCompleted } = useLessonContext();
-
-  const validateCommand = (command: string) => {
-    const currentLesson = lessonData.lessons[currentModule].tasks[currentTask];
-    const requiredCommands = currentLesson.steps
-      .filter((step: string) => step.includes("`"))
-      .map((step: string) => {
-        const match = step.match(/`([^`]+)`/);
-        return match ? match[1] : "";
-      })
-      .filter((cmd: string) => cmd);
-
-    return requiredCommands.some((cmd: string) => {
-      // Handle variable parts in commands
-      const cmdRegex = cmd
-        .replace(/</g, "(?:<|)")
-        .replace(/>/g, "(?:>|)")
-        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-        .replace("\\<\\?\\:\\>\\|\\)", "[^\\s]+");
-      return new RegExp(`^${cmdRegex}$`).test(command);
-    });
-  };
+  const validateCommand = useLessonStore((state) => state.validateCommand);
 
   const handleCommand = (command: string) => {
     let output = "";
-    const isValidCommand = validateCommand(command);
 
-    if (isValidCommand) {
-      output = "Command executed successfully!";
-      markTaskCompleted(
-        lessonData.lessons[currentModule].tasks[currentTask].id
-      );
+    if (validateCommand(command)) {
+      output = "Command executed successfully! ✅";
     } else {
       output = "Try again. Check the lesson steps for the correct command.";
     }

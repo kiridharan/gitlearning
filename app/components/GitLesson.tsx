@@ -1,20 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { lessonData } from "../lessons/lessons";
+import { useLessonStore } from "../store/lessonStore";
 
 export default function GitLesson() {
-  const [selectedModule, setSelectedModule] = useState<number>(0);
-  const [selectedTask, setSelectedTask] = useState<number>(0);
+  const {
+    currentModule,
+    currentTask,
+    setCurrentModule,
+    setCurrentTask,
+    completedTasks,
+  } = useLessonStore();
 
-  const currentModule = lessonData.lessons[selectedModule];
-  const currentTask = currentModule?.tasks[selectedTask];
+  const currentModuleData = lessonData.lessons[currentModule];
+  const currentTaskData = currentModuleData?.tasks[currentTask];
 
   return (
     <div className="h-full flex flex-col text-gray-300">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Git Tutorial</h2>
         <span className="px-2 py-1 bg-blue-600 rounded-full text-xs">
-          {currentModule?.difficulty}
+          {currentModuleData?.difficulty}
         </span>
       </div>
 
@@ -24,17 +30,20 @@ export default function GitLesson() {
           <button
             key={index}
             onClick={() => {
-              setSelectedModule(index);
-              setSelectedTask(0);
+              setCurrentModule(index);
+              setCurrentTask(0);
             }}
             className={`px-3 py-1 rounded-full text-sm whitespace-nowrap
               ${
-                selectedModule === index
+                currentModule === index
                   ? "bg-blue-600 text-white"
                   : "bg-[#2a2a2a] hover:bg-[#3a3a3a]"
               }`}
           >
             {module.module}
+            {module.tasks.every((task) => completedTasks.has(task.id)) && (
+              <span className="ml-2">✅</span>
+            )}
           </button>
         ))}
       </div>
@@ -42,19 +51,24 @@ export default function GitLesson() {
       {/* Task Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">{currentTask?.title}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold">{currentTaskData?.title}</h3>
+            {completedTasks.has(currentTaskData?.id || 0) && (
+              <span className="text-green-500">✅</span>
+            )}
+          </div>
 
-          <p className="text-gray-400">{currentTask?.description}</p>
+          <p className="text-gray-400">{currentTaskData?.description}</p>
 
           <div className="bg-[#2a2a2a] p-4 rounded-lg">
             <h4 className="font-semibold mb-2">Action Required:</h4>
-            <p className="text-blue-400">{currentTask?.action}</p>
+            <p className="text-blue-400">{currentTaskData?.action}</p>
           </div>
 
           <div className="space-y-2">
             <h4 className="font-semibold">Steps:</h4>
             <ul className="list-disc list-inside space-y-2">
-              {currentTask?.steps.map((step, index) => (
+              {currentTaskData?.steps.map((step, index) => (
                 <li key={index} className="text-gray-400">
                   {step}
                 </li>
@@ -67,10 +81,10 @@ export default function GitLesson() {
       {/* Task Navigation */}
       <div className="mt-4 flex justify-between items-center pt-4 border-t border-[#333333]">
         <button
-          onClick={() => setSelectedTask(Math.max(0, selectedTask - 1))}
-          disabled={selectedTask === 0}
+          onClick={() => setCurrentTask(Math.max(0, currentTask - 1))}
+          disabled={currentTask === 0}
           className={`px-3 py-1 rounded ${
-            selectedTask === 0
+            currentTask === 0
               ? "bg-[#2a2a2a] text-gray-600"
               : "bg-blue-600 hover:bg-blue-700"
           }`}
@@ -78,17 +92,17 @@ export default function GitLesson() {
           Previous
         </button>
         <span className="text-sm">
-          {selectedTask + 1} of {currentModule?.tasks.length}
+          {currentTask + 1} of {currentModuleData?.tasks.length}
         </span>
         <button
           onClick={() =>
-            setSelectedTask(
-              Math.min(currentModule?.tasks.length - 1, selectedTask + 1)
+            setCurrentTask(
+              Math.min(currentModuleData?.tasks.length - 1, currentTask + 1)
             )
           }
-          disabled={selectedTask === currentModule?.tasks.length - 1}
+          disabled={currentTask === currentModuleData?.tasks.length - 1}
           className={`px-3 py-1 rounded ${
-            selectedTask === currentModule?.tasks.length - 1
+            currentTask === currentModuleData?.tasks.length - 1
               ? "bg-[#2a2a2a] text-gray-600"
               : "bg-blue-600 hover:bg-blue-700"
           }`}
