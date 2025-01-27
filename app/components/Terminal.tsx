@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useLessonStore } from "../store/lessonStore";
+import { lessonData } from "../lessons/lessons";
+import { toast } from "react-hot-toast";
 
 interface TerminalCommand {
   command: string;
@@ -11,15 +13,28 @@ export default function Terminal() {
   const [commands, setCommands] = useState<TerminalCommand[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const terminalEndRef = useRef<HTMLDivElement>(null);
-  const validateCommand = useLessonStore((state) => state.validateCommand);
+  const { currentModule, currentTask, validateCommand } = useLessonStore();
 
   const handleCommand = (command: string) => {
+    if (command.trim() === "git init") {
+      useLessonStore.getState().setGitInitialized(true);
+      // Your existing command handling
+    }
+    const currentTaskData =
+      lessonData.lessons[currentModule]?.tasks[currentTask];
     let output = "";
 
-    if (validateCommand(command)) {
-      output = "Command executed successfully! ✅";
+    if (
+      currentTaskData?.type === "command" &&
+      currentTaskData.cmd === command
+    ) {
+      output =
+        currentTaskData.expectedOutput || "Command executed successfully";
+      validateCommand(command);
     } else {
-      output = "Try again. Check the lesson steps for the correct command.";
+      output =
+        "Command not recognized or incorrect. Check the lesson instructions.";
+      toast.error("Try again! Check the lesson for the correct command.");
     }
 
     setCommands([...commands, { command, output }]);

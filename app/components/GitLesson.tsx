@@ -24,7 +24,6 @@ export default function GitLesson() {
         </span>
       </div>
 
-      {/* Module Navigation */}
       <div className="flex space-x-2 mb-4 overflow-x-auto">
         {lessonData.lessons.map((module, index) => (
           <button
@@ -48,7 +47,6 @@ export default function GitLesson() {
         ))}
       </div>
 
-      {/* Task Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
@@ -60,10 +58,43 @@ export default function GitLesson() {
 
           <p className="text-gray-400">{currentTaskData?.description}</p>
 
-          <div className="bg-[#2a2a2a] p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Action Required:</h4>
-            <p className="text-blue-400">{currentTaskData?.action}</p>
-          </div>
+          {currentTaskData?.type === "command" && (
+            <div className="bg-[#2a2a2a] p-4 rounded-lg space-y-3">
+              <div>
+                <h4 className="font-semibold mb-2">Command:</h4>
+                <code className="bg-[#1e1e1e] px-2 py-1 rounded text-blue-400">
+                  {currentTaskData.cmd}
+                </code>
+              </div>
+              {currentTaskData.hint && (
+                <div>
+                  <h4 className="font-semibold mb-1">Hint:</h4>
+                  <p className="text-gray-400">{currentTaskData.hint}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {currentTaskData?.type === "reading" && currentTaskData.content && (
+            <div className="space-y-4">
+              {currentTaskData.content.map((item, index) => (
+                <div key={index} className="bg-[#2a2a2a] p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2">{item.title}</h4>
+                  <p className="text-gray-400 mb-2">{item.text}</p>
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:underline"
+                    >
+                      Learn more →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="space-y-2">
             <h4 className="font-semibold">Steps:</h4>
@@ -78,7 +109,6 @@ export default function GitLesson() {
         </div>
       </div>
 
-      {/* Task Navigation */}
       <div className="mt-4 flex justify-between items-center pt-4 border-t border-[#333333]">
         <button
           onClick={() => setCurrentTask(Math.max(0, currentTask - 1))}
