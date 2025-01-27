@@ -1,5 +1,4 @@
 import React from "react";
-import { FolderIcon } from "lucide-react";
 
 interface FileExplorerProps {
   showGitFolder: boolean;

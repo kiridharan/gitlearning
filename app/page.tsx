@@ -56,8 +56,8 @@ export default function Home() {
                         </h3>
                         <p className="text-gray-500 max-w-md">
                           Learn the fundamentals of Git version control system.
-                          Let's start by understanding what Git is and creating
-                          your first repository.
+                          Let&apos;s start by understanding what Git is and
+                          creating your first repository.
                         </p>
                       </div>
                       <button

@@ -10,7 +10,13 @@ export default function LoadingScreen() {
         >
           <defs>
             <clipPath id="loading-clip">
-              <rect className="animate-git-load" x="0" y="0" width="92" height="92">
+              <rect
+                className="animate-git-load"
+                x="0"
+                y="0"
+                width="92"
+                height="92"
+              >
                 <animate
                   attributeName="height"
                   values="0;92"

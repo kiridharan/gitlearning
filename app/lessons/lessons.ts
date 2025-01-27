@@ -136,7 +136,7 @@ export const lessonData: LessonData = {
           cmd: "git add .",
           expectedOutput: "Changes staged for commit",
           hint: "This will stage all changes in the current directory",
-          validation: (output: string) => true,
+          validation: (output: string) => output.includes("Changes staged"),
           steps: [
             "Make some changes to your files",
             "Run git add command",
