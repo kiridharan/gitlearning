@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { lessonData } from "../lessons/lessons";
+import { lessonData } from "../lessons/lessonsData";
 import { useLessonStore } from "../store/lessonStore";
 
 export default function GitLesson() {

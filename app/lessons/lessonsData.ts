@@ -161,6 +161,5 @@ export const lessonData: LessonData = {
         },
       ],
     },
-    // ... Would you like me to continue with the rest of the modules?
   ],
 };

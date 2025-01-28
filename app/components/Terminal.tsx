@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useLessonStore } from "../store/lessonStore";
-import { lessonData } from "../lessons/lessons";
+import { lessonData } from "../lessons/lessonsData";
 import { toast } from "react-hot-toast";
 
 interface TerminalCommand {
@@ -18,7 +18,7 @@ export default function Terminal() {
   const handleCommand = (command: string) => {
     if (command.trim() === "git init") {
       useLessonStore.getState().setGitInitialized(true);
-      // Your existing command handling
+     
     }
     const currentTaskData =
       lessonData.lessons[currentModule]?.tasks[currentTask];

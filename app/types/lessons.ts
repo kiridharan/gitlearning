@@ -3,7 +3,6 @@ export interface ContentItem {
   text: string;
   link?: string;
 }
-
 export interface Task {
   id: number;
   title: string;

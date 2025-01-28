@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { lessonData } from "../lessons/lessons";
+import { lessonData } from "../lessons/lessonsData";
 import { toast } from "react-hot-toast";
 import { persist } from "zustand/middleware";
 
