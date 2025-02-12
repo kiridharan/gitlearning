@@ -18,7 +18,6 @@ export default function Terminal() {
   const handleCommand = (command: string) => {
     if (command.trim() === "git init") {
       useLessonStore.getState().setGitInitialized(true);
-     
     }
     const currentTaskData =
       lessonData.lessons[currentModule]?.tasks[currentTask];
@@ -37,6 +36,13 @@ export default function Terminal() {
       toast.error("Try again! Check the lesson for the correct command.");
     }
 
+    if (command.startsWith("git branch ")) {
+      window.dispatchEvent(
+        new CustomEvent("git-command", {
+          detail: { command: command },
+        }),
+      );
+    }
     setCommands([...commands, { command, output }]);
     setCurrentInput("");
   };
