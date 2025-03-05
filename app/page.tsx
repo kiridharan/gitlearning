@@ -10,19 +10,28 @@ import { toast } from "react-hot-toast";
 import { FileExplorer } from "./components/FileExplorer";
 import LoadingScreen from "./components/LoadingScreen";
 import { useState } from "react";
-function ResizeHandle({ className = "" }: { className?: string }) {
-  return (
-    <PanelResizeHandle
-      className={`w-2 hover:bg-blue-600 bg-[#2a2a2a] transition-colors ${className}`}
-    />
-  );
-}
+import Tour from "./components/Tour";
+import { useEffect } from "react";
 
 export default function Home() {
   const isLoading = useLessonStore((state) => state.isLoading);
   const currentModule = useLessonStore((state) => state.currentModule);
-  const isGitInitialized = useLessonStore((state) => state.isGitInitialized);
+  // const isGitInitialized = useLessonStore((state) => state.isGitInitialized);
   const [showLessons, setShowLessons] = useState(true);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenTour");
+    if (!hasSeenTour) {
+      setShowTour(true);
+    }
+  }, []);
+
+  const handleTourComplete = () => {
+    setShowTour(false);
+    alert("Tour completed 4");
+    localStorage.setItem("hasSeenTour", "true");
+  };
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -32,6 +41,7 @@ export default function Home() {
 
   return (
     <>
+      {showTour && <Tour onComplete={handleTourComplete} />}
       <LessonsDialog
         isOpen={showLessons}
         onClose={() => setShowLessons(false)}
@@ -40,19 +50,25 @@ export default function Home() {
         <PanelGroup direction="vertical">
           <Panel defaultSize={80} minSize={30}>
             <PanelGroup direction="horizontal">
-              <Panel defaultSize={20} minSize={15}>
-                <div className="h-full bg-[#1e1e1e] border-r border-[#333333]">
+              {/* <Panel defaultSize={20} minSize={15}>
+                <div
+                  id="file-explorer"
+                  className="h-full bg-[#1e1e1e] border-r border-[#333333]"
+                >
                   <div className="p-2 text-gray-300">
                     <h2 className="font-semibold mb-2">Explorer</h2>
                     <FileExplorer showGitFolder={isGitInitialized} />
                   </div>
                 </div>
-              </Panel>
+              </Panel> */}
 
-              <ResizeHandle />
+              {/* <PanelResizeHandle /> */}
 
               <Panel defaultSize={50} minSize={30}>
-                <div className="h-full bg-[#1e1e1e] border-r border-[#333333]">
+                <div
+                  id="git-visualization"
+                  className="h-full bg-[#1e1e1e] border-r border-[#333333]"
+                >
                   <div className="h-full p-4">
                     {showVisualization ? (
                       <GitVisualization />
@@ -84,10 +100,10 @@ export default function Home() {
                 </div>
               </Panel>
 
-              <ResizeHandle />
+              <PanelResizeHandle />
 
               <Panel defaultSize={30} minSize={20}>
-                <div className="h-full bg-[#1e1e1e]">
+                <div id="git-lesson" className="h-full bg-[#1e1e1e]">
                   <div className="h-full p-4 text-gray-300">
                     <GitLesson />
                   </div>
@@ -96,10 +112,13 @@ export default function Home() {
             </PanelGroup>
           </Panel>
 
-          <ResizeHandle className="h-2 w-full cursor-row-resize" />
+          <PanelResizeHandle className="h-2 w-full cursor-row-resize" />
 
           <Panel defaultSize={20} minSize={10}>
-            <div className="h-full bg-[#1e1e1e] border-t border-[#333333]">
+            <div
+              id="git-terminal"
+              className="h-full bg-[#1e1e1e] border-t border-[#333333]"
+            >
               <div className="p-2 bg-[#252526] text-gray-300 h-full">
                 <div className="font-mono h-full">
                   <Terminal />
