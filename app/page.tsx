@@ -7,7 +7,7 @@ import Terminal from "./components/Terminal";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useLessonStore } from "./store/lessonStore";
 import { toast } from "react-hot-toast";
-import { FileExplorer } from "./components/FileExplorer";
+// import { FileExplorer } from "./components/FileExplorer";
 import LoadingScreen from "./components/LoadingScreen";
 import { useState } from "react";
 import Tour from "./components/Tour";

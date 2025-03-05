@@ -8,7 +8,7 @@ interface Branch {
 
 export default function GitVisualization() {
   const isGitInitialized = useLessonStore((state) => state.isGitInitialized);
-  const currentModule = useLessonStore((state) => state.currentModule);
+  // const currentModule = useLessonStore((state) => state.currentModule);
   const [branches, setBranches] = useState<Branch[]>([
     { name: "main", position: { x: 100, y: 100 } },
   ]);
@@ -25,15 +25,15 @@ export default function GitVisualization() {
       }
     };
 
-    // Subscribe to command events
-    window.addEventListener("git-command", (e: any) => {
-      handleBranchCreation(e.detail.command);
-    });
+    const eventHandler = (e: Event) => {
+      const customEvent = e as CustomEvent<{ command: string }>;
+      handleBranchCreation(customEvent.detail.command);
+    };
+
+    window.addEventListener("git-command", eventHandler);
 
     return () => {
-      window.removeEventListener("git-command", (e: any) => {
-        handleBranchCreation(e.detail.command);
-      });
+      window.removeEventListener("git-command", eventHandler);
     };
   }, [branches]);
 
@@ -68,65 +68,65 @@ export default function GitVisualization() {
     />
   );
 
-  const renderInitialState = () => (
-    <svg width="100%" height="100%" viewBox="0 0 400 200">
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="7"
-          refX="9"
-          refY="3.5"
-          orient="auto"
-        >
-          <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
-        </marker>
-      </defs>
-      {isGitInitialized && renderCommitNode(200, 100, "main")}
-    </svg>
-  );
+  // const renderInitialState = () => (
+  //   <svg width="100%" height="100%" viewBox="0 0 400 200">
+  //     <defs>
+  //       <marker
+  //         id="arrowhead"
+  //         markerWidth="10"
+  //         markerHeight="7"
+  //         refX="9"
+  //         refY="3.5"
+  //         orient="auto"
+  //       >
+  //         <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
+  //       </marker>
+  //     </defs>
+  //     {isGitInitialized && renderCommitNode(200, 100, "main")}
+  //   </svg>
+  // );
 
-  const renderBranchState = () => (
-    <svg width="100%" height="100%" viewBox="0 0 400 200">
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="7"
-          refX="9"
-          refY="3.5"
-          orient="auto"
-        >
-          <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
-        </marker>
-      </defs>
-      {renderCommitNode(100, 100, "main")}
-      {renderCommitNode(300, 100, "A")}
-      {renderBranch(120, 100, 280, 100)}
-    </svg>
-  );
+  // const renderBranchState = () => (
+  //   <svg width="100%" height="100%" viewBox="0 0 400 200">
+  //     <defs>
+  //       <marker
+  //         id="arrowhead"
+  //         markerWidth="10"
+  //         markerHeight="7"
+  //         refX="9"
+  //         refY="3.5"
+  //         orient="auto"
+  //       >
+  //         <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
+  //       </marker>
+  //     </defs>
+  //     {renderCommitNode(100, 100, "main")}
+  //     {renderCommitNode(300, 100, "A")}
+  //     {renderBranch(120, 100, 280, 100)}
+  //   </svg>
+  // );
 
-  const renderMultipleBranches = () => (
-    <svg width="100%" height="100%" viewBox="0 0 400 200">
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="7"
-          refX="9"
-          refY="3.5"
-          orient="auto"
-        >
-          <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
-        </marker>
-      </defs>
-      {renderCommitNode(100, 100, "main")}
-      {renderCommitNode(300, 50, "B")}
-      {renderCommitNode(300, 150, "C")}
-      {renderBranch(120, 100, 280, 50)}
-      {renderBranch(120, 100, 280, 150)}
-    </svg>
-  );
+  // const renderMultipleBranches = () => (
+  //   <svg width="100%" height="100%" viewBox="0 0 400 200">
+  //     <defs>
+  //       <marker
+  //         id="arrowhead"
+  //         markerWidth="10"
+  //         markerHeight="7"
+  //         refX="9"
+  //         refY="3.5"
+  //         orient="auto"
+  //       >
+  //         <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50" />
+  //       </marker>
+  //     </defs>
+  //     {renderCommitNode(100, 100, "main")}
+  //     {renderCommitNode(300, 50, "B")}
+  //     {renderCommitNode(300, 150, "C")}
+  //     {renderBranch(120, 100, 280, 50)}
+  //     {renderBranch(120, 100, 280, 150)}
+  //   </svg>
+  // );
 
   const renderBranches = () => (
     <svg width="100%" height="100%" viewBox="0 0 400 300">
